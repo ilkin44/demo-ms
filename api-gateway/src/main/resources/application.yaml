@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: GATEWAY-SERVICE
+  cloud:
+    gateway:
+      routes:
+        - id: payment
+          predicates:
+            - Path=/payment/**
+          uri: http://localhost:9090
+        - id: order
+          predicates:
+            - Path=/order/**
+          uri: http://localhost:9095
+  main:
+    web-application-type: reactive
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
