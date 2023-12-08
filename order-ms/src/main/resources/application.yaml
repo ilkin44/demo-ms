@@ -1,5 +1,7 @@
 server:
   port: 9095
+  servlet:
+    context-path: /
 
 spring:
   application:
@@ -13,3 +15,13 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
 
+openapi:
+  service:
+    title: order-service doc
+    version: 1.0.0
+    url: http://localhost:8080 #api gateway url
+springdoc:
+  api-docs:
+    path: /order-service/v3/api-docs
+  swagger-ui:
+    path: /order-service/swagger-ui.html
