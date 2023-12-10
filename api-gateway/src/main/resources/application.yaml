@@ -11,24 +11,13 @@ spring:
         - id: payment-service-route
           uri: http://localhost:9090
           predicates:
-            - Path=/payment-service/v3/api-docs
-            - Method=GET
+            - Path=/payment/**, /payment-service/v3/api-docs
 
         - id: order-service-route
           uri: http://localhost:9095
           predicates:
-            - Path=/order-service/v3/api-docs
-            - Method=GET
+            - Path=/order/**, /order-service/v3/api-docs
 
-#      routes:
-#        - id: payment
-#          predicates:
-#            - Path=/payment/**
-#          uri: http://localhost:9090
-#        - id: order
-#          predicates:
-#            - Path=/order/**
-#          uri: http://localhost:9095
   main:
     web-application-type: reactive
 
