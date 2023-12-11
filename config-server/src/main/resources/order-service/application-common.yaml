@@ -1,0 +1,6 @@
+application:
+  name: ORDER-SERVICE
+server:
+  port: 0
+  servlet:
+    context-path: /
