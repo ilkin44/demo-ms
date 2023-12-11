@@ -18,6 +18,7 @@ public class OrderController {
 
     @GetMapping("/info")
     public String getInfo() {
+        System.out.println("req");
         return "This is order api;";
     }
 
