@@ -1,9 +1,17 @@
 spring:
+  application:
+    name: CONFIG-SERVER
   cloud:
     config:
       server:
         git:
-          uri: https://github.com/ilkin44/demo-ms.git
-          clone-on-start: true
+          uri: https://github.com/ilkin44/cloud-config-demo.git
+#          clone-on-start: true
+#          force-pull: true
+#          search-paths: '{application}'
+#          timeout: 10
+#          skipSslValidation: true
+#          username: ilkin44
+#          password: Expgithub6061
 server:
   port: 8888
