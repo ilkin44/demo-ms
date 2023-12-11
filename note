@@ -1,7 +1,8 @@
 1. CORS
 2. CSRF
-3. API GATEWAY (BALANCED REQUEST) in same service
+3. API GATEWAY (BALANCED REQUEST) in same service //OK
 4. Spring actuator
 5. Spring boot admin tool
 6. Spring security for microservices
+7. Spring cloud config //OK
 
