@@ -23,16 +23,4 @@ public class AuthController {
 
         return ResponseEntity.ok().headers(headers).body("authenticated");
     }
-
-    @PutMapping
-    public ResponseEntity<?> refreshToken(@RequestHeader("Refresh-Token") String refreshToken) {
-        var token = authService.refreshToken(refreshToken);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Access-Token", token.getAccessToken());
-        headers.set("Refresh-Token", token.getRefreshToken());
-
-        return ResponseEntity.ok().headers(headers).body("");
-    }
-
 }

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.util.*;
-import java.util.function.Function;
 
 @Service
 public class JwtService {
@@ -47,51 +46,12 @@ public class JwtService {
         return AuthResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
     }
 
-//    public String extractUsername(String token) {
-//        return extractClaim(token, Claims::getSubject);
-//    }
-//
-//    public Long extractUserId(String token) {
-//        Claims claims = extractAllClaims(token);
-//        return Long.parseLong(claims.get("user-id").toString());
-//    }
-
-//    public List<String> extractRoles(String token) {
-//        Claims claims = extractAllClaims(token);
-//        return (List<String>) claims.get("roles");
-//    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-//    public boolean isTokenValid(String token) {
-//        return !isTokenExpired(token);
-//    }
-
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-    }
-
     private Claims extraClaims(MyUserPrincipal userPrincipal) {
         Map<String, Object> claims = new HashMap<>();
         Set<String> userRoles = new HashSet<>();
         for (GrantedAuthority role : userPrincipal.getAuthorities()) {
-            userRoles.add("ROLE_" + role.getAuthority());
+            // TODO: 12/12/2023 add for db user ("ROLE_" +)
+            userRoles.add(role.getAuthority());
         }
         claims.put("roles", userRoles);
         return Jwts.claims(claims);
