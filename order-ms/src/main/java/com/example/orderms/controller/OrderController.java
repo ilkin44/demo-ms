@@ -18,7 +18,6 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/info")
-    @PreAuthorize("hasRole('ADMIN')")
     public String getInfo() {
         System.out.println("req");
         return "This is order api;";

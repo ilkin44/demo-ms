@@ -5,6 +5,7 @@ import com.example.authservice.data.dto.request.AuthRequest;
 import com.example.authservice.data.dto.response.AuthResponse;
 import com.example.authservice.service.AuthService;
 import com.example.authservice.service.jwt.JwtService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,4 +40,21 @@ public class AuthServiceImpl implements AuthService {
 
         return jwtService.generateToken(myUserPrincipal);
     }
+
+    @Override
+    public boolean isTokenValid(String token) {
+//        return jwtService.isTokenValid(token);
+        return true;
+    }
+
+    @Override
+    public Claims getClaims(String token) {
+        return jwtService.getAllClaimsFromToken(token);
+    }
+
+    @Override
+    public boolean checkRole(String token, String requestPath) {
+        return true;
+    }
+
 }
