@@ -1,11 +1,8 @@
 package com.example.apigateway.config.filter;
 
 import com.example.apigateway.client.AuthClient;
-import com.example.apigateway.config.RouterValidator;
-import com.example.apigateway.data.dto.request.CheckRoleRequestDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
@@ -16,9 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.Arrays;
-import java.util.List;
-
 //
 @Component
 @RefreshScope
@@ -26,7 +20,7 @@ import java.util.List;
 public class AuthenticationFilter implements GatewayFilter {
 
 
-    private final RouterValidator routerValidator;
+//    private final RouterValidator routerValidator;
 
     private final AuthClient authClient;
 
@@ -47,15 +41,15 @@ public class AuthenticationFilter implements GatewayFilter {
 
         System.out.println("test");
 
-        if (authClient.checkToken(token))
+        if (tes(token))
             return this.onError(exchange, "Token expired", HttpStatus.UNAUTHORIZED);
 //
-        if (authClient.checkRole(CheckRoleRequestDto
-                .builder()
-                .token(token)
-                .basePath(requestPath)
-                .build()))
-            System.out.println(request.getURI().getPath());
+//        if (authClient.checkRole(CheckRoleRequestDto
+//                .builder()
+//                .token(token)
+//                .basePath(requestPath)
+//                .build()))
+//            System.out.println(request.getURI().getPath());
 
 //            return this.onError(exchange, "Authorization header is invalid", HttpStatus.FORBIDDEN);
 
@@ -91,4 +85,11 @@ public class AuthenticationFilter implements GatewayFilter {
                 .header("roles", String.valueOf(claims.get("roles")))
                 .build();
     }
+
+    public boolean tes(String token){
+       return authClient.checkToken(token);
+    }
+//    public Mono<Boolean> postEcho(String token) {
+//        return Mono.just(authClient.checkToken(token));
+//    }
 }

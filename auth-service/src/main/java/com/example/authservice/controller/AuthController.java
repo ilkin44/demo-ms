@@ -31,7 +31,7 @@ public class AuthController {
     }
 
     @GetMapping("/check/token")
-    boolean isTokenValid(@NonNull String token) {
+    Boolean isTokenValid(@NonNull String token) {
         return authService.isTokenValid(token);
     }
 

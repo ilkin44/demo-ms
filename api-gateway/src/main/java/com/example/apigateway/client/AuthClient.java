@@ -7,12 +7,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import reactor.core.publisher.Mono;
 
-@FeignClient(name = "auth-service", url = "http://localhost:9096/auth")
+@FeignClient(name = "auth-service", url = "http://localhost:8080/auth")
 @Validated
 public interface AuthClient {
     @GetMapping("/check/token")
-    boolean checkToken(@NonNull String token);
+    Boolean checkToken(@NonNull String token);
 
     @GetMapping("/check/role")
     boolean checkRole(@RequestBody CheckRoleRequestDto requestDto);

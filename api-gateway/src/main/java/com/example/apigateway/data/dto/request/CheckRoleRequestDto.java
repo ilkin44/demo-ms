@@ -1,13 +1,13 @@
 package com.example.apigateway.data.dto.request;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Setter
 @Getter
-@Builder
+//@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class CheckRoleRequestDto {
     @NotNull
     private String token;
