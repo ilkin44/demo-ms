@@ -1,6 +1,7 @@
-server:
-  port: 9096
 spring:
-  cloud:
-    config:
-      enabled: false
+  profiles:
+    active:
+      - auth
+      - eureka
+      - openapi
+      - common

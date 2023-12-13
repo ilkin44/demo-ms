@@ -3,6 +3,7 @@ package com.example.apigateway.config;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -10,9 +11,9 @@ import java.util.function.Predicate;
 public class RouterValidator {
 
     public static final List<String> openApiEndpoints = List.of(
-            "/auth/register",
             "/payment-service/v3/api-docs",
-            "/order-service/v3/api-docs"
+            "/order-service/v3/api-docs",
+            "/auth-service/v3/api-docs"
 
     );
 

@@ -1,0 +1,13 @@
+server:
+  port: 9096
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: AUTH-SERVICE
+  cloud:
+    config:
+      enabled: false
+
+      #        todo move yaml files to git and set cloud config

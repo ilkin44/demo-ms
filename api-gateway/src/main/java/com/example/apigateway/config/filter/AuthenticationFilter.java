@@ -4,8 +4,6 @@ import com.example.apigateway.config.RouterValidator;
 import com.example.apigateway.util.JwtUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.http.HttpStatus;
@@ -33,6 +31,7 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
 
         if (routerValidator.isSecured.test(request)) {
+
             if (this.isAuthMissing(request) || this.isPrefixMissing(request))
                 return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
 
@@ -45,7 +44,6 @@ public class AuthenticationFilter implements GatewayFilter {
         }
         return chain.filter(exchange);
     }
-
 
     /*PRIVATE*/
 
