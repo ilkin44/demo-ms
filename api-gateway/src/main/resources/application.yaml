@@ -5,18 +5,22 @@ server:
 spring:
   application:
     name: GATEWAY-SERVICE
-  cloud:
-    gateway:
-      routes:
-        - id: payment-service-route
-          uri: lb://PAYMENT-SERVICE
-          predicates:
-            - Path=/payment/**, /payment-service/v3/api-docs
-
-        - id: order-service-route
-          uri: lb://ORDER-SERVICE
-          predicates:
-            - Path=/order/**, /order-service/v3/api-docs
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: payment-service-route
+#          uri: lb://PAYMENT-SERVICE
+#          predicates:
+#            - Path=/payment/**, /payment-service/v3/api-docs
+#          filters:
+#            - RequestHashing=SHA-256
+#
+#        - id: order-service-route
+#          uri: lb://ORDER-SERVICE
+#          predicates:
+#            - Path=/order/**, /order-service/v3/api-docs
+#          filters:
+#            - RequestHashing=SHA-256
 
   main:
     web-application-type: reactive

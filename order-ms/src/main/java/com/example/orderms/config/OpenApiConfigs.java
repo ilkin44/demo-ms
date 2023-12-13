@@ -1,8 +1,11 @@
 package com.example.orderms.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +21,15 @@ public class OpenApiConfigs {
             @Value("${openapi.service.title}") String serviceTitle,
             @Value("${openapi.service.version}") String serviceVersion,
             @Value("${openapi.service.url}") String url) {
-        return new OpenAPI()
+        return new OpenAPI().addSecurityItem(new SecurityRequirement().addList("Bearer Authentication"))
                 .servers(List.of(new Server().url(url)))
-                .info(new Info().title(serviceTitle).version(serviceVersion));
+                .info(new Info().title(serviceTitle).version(serviceVersion))
+                .components(new Components().addSecuritySchemes("Bearer Authentication", createAPIKeyScheme()));
+    }
+
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme().type(SecurityScheme.Type.HTTP)
+                .bearerFormat("JWT")
+                .scheme("bearer");
     }
 }
