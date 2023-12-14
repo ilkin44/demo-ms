@@ -1,7 +1,6 @@
 package com.example.apigateway.config.filter;
 
 import com.example.apigateway.client.AuthClient;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -13,7 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-//
+import java.util.List;
+
 @Component
 @RefreshScope
 @RequiredArgsConstructor
@@ -24,7 +24,6 @@ public class AuthenticationFilter implements GatewayFilter {
 
     private final AuthClient authClient;
 
-    //    @Value("${jwt.prefix}")
     public String TOKEN_PREFIX = "Bearer ";
 
     @Override
@@ -33,29 +32,29 @@ public class AuthenticationFilter implements GatewayFilter {
 
         String requestPath = request.getURI().getPath();
 
-
-        if (this.isAuthMissing(request) || this.isPrefixMissing(request))
+        if (this.isAuthMissing(request) || this.isPrefixMissing(request)) {
             return this.onError(exchange, "Authorization header is missing in request", HttpStatus.UNAUTHORIZED);
+        }
 
+        System.out.println("step1 ");
         final String token = this.getAuthHeader(request);
 
-        System.out.println("test");
-
-        if (tes(token))
+        if (!isValidToken(token)) {
             return this.onError(exchange, "Token expired", HttpStatus.UNAUTHORIZED);
-//
-//        if (authClient.checkRole(CheckRoleRequestDto
-//                .builder()
-//                .token(token)
-//                .basePath(requestPath)
-//                .build()))
-//            System.out.println(request.getURI().getPath());
+        }
+        System.out.println("step2 ");
 
-//            return this.onError(exchange, "Authorization header is invalid", HttpStatus.FORBIDDEN);
+        if (!isAuthorized(token, requestPath)) {
+            return this.onError(exchange, "Authorization header is invalid", HttpStatus.FORBIDDEN);
+        }
+        System.out.println("step3 ");
 
         this.populateRequestWithHeaders(exchange, token);
-
         return chain.filter(exchange);
+    }
+
+    private boolean isAuthorized(String token, String requestPath) {
+        return authClient.checkRole(token, requestPath);
     }
 
     private Mono<Void> onError(ServerWebExchange exchange, String err, HttpStatus httpStatus) {
@@ -80,16 +79,13 @@ public class AuthenticationFilter implements GatewayFilter {
     }
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
-        Claims claims = authClient.getAllClaimsFromToken(token);
+        List<String> roles = authClient.getAllRoles(token);
         exchange.getRequest().mutate()
-                .header("roles", String.valueOf(claims.get("roles")))
+                .header("roles", String.valueOf(roles))
                 .build();
     }
 
-    public boolean tes(String token){
-       return authClient.checkToken(token);
+    private boolean isValidToken(String token) {
+        return authClient.checkToken(token);
     }
-//    public Mono<Boolean> postEcho(String token) {
-//        return Mono.just(authClient.checkToken(token));
-//    }
 }

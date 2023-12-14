@@ -9,12 +9,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 @PreAuthorize("permitAll()")
+@Validated
 public class AuthController {
 
     private final AuthService authService;
@@ -31,17 +35,17 @@ public class AuthController {
     }
 
     @GetMapping("/check/token")
-    Boolean isTokenValid(@NonNull @RequestParam String token) {
+    boolean isTokenValid(@NonNull @RequestParam String token) {
         return authService.isTokenValid(token);
     }
 
     @GetMapping("/check/role")
-    boolean getPaymentsByOrderId(@NonNull String token, @NonNull String requestPath) {
-        return authService.checkRole(token,requestPath);
+    boolean checkRole(@RequestParam String token, @RequestParam String requestPath) {
+        return authService.checkRole(token, requestPath);
     }
 
     @GetMapping("/get/claims")
-    Claims getAllClaimsFromToken(@NonNull String token) {
+    List<String> getAllRoles(@NonNull @RequestParam String token) {
         return authService.getClaims(token);
     }
 }

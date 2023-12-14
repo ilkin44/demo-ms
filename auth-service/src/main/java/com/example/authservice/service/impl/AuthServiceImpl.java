@@ -5,13 +5,14 @@ import com.example.authservice.data.dto.request.AuthRequest;
 import com.example.authservice.data.dto.response.AuthResponse;
 import com.example.authservice.service.AuthService;
 import com.example.authservice.service.jwt.JwtService;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,18 +44,28 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean isTokenValid(String token) {
-//        return jwtService.isTokenValid(token);
-        return true;
+        return jwtService.isTokenValid(token);
     }
 
     @Override
-    public Claims getClaims(String token) {
-        return jwtService.getAllClaimsFromToken(token);
+    public List<String> getClaims(String token) {
+        return jwtService.extractRoles(token);
     }
 
     @Override
     public boolean checkRole(String token, String requestPath) {
-        return true;
+        return isAuthorized(token, requestPath);
     }
 
+    //todo can be change
+    private boolean isAuthorized(String token, String requestPath) {
+        List<String> roles = jwtService.extractRoles(token);
+
+        if ("/payment/info".equals(requestPath) && roles.contains("ROLE_ADMIN")) {
+            return true;
+        } else if ("/payment/all/*".contains(requestPath) && (roles.contains("ROLE_ADMIN") || roles.contains("ROLE_USER"))) {
+            return true;
+        }
+        return false;
+    }
 }

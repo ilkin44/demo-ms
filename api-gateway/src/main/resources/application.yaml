@@ -1,53 +1,7 @@
-server:
-  servlet:
-    context-path: /
-
 spring:
-  application:
-    name: GATEWAY-SERVICE
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: payment-service-route
-#          uri: lb://PAYMENT-SERVICE
-#          predicates:
-#            - Path=/payment/**, /payment-service/v3/api-docs
-#          filters:
-#            - RequestHashing=SHA-256
-#
-#        - id: order-service-route
-#          uri: lb://ORDER-SERVICE
-#          predicates:
-#            - Path=/order/**, /order-service/v3/api-docs
-#          filters:
-#            - RequestHashing=SHA-256
-
-  main:
-    web-application-type: reactive
-    allow-circular-references: true
-
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: http://localhost:8761/eureka
-  instance:
-    prefer-ip-address: true #for register ip address
-
-springdoc:
-  enable-native-support: true
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    path: /swagger-ui.html
-    config-url: /v3/api-docs/swagger-config
-    urls:
-#      this config is for api-gateway swagger-ui
-#      - url: /v3/api-docs
-#        name: API Gateway Service
-      - url: /payment-service/v3/api-docs
-        name: Payment Service
-      - url: /order-service/v3/api-docs
-        name: Order Service
-      - url: /auth-service/v3/api-docs
-        name: Auth Service
+  profiles:
+    active:
+      - common
+      - eureka
+      - springdoc
+#      - gateway

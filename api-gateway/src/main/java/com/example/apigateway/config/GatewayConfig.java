@@ -23,8 +23,11 @@ public class GatewayConfig {
                         .filters(f -> f.filter(filter))
                         .uri("lb://PAYMENT-SERVICE"))
 
-                .route("order-service-route", r -> r.path("/order/**", "/order-service/v3/api-docs")
+                .route("order-service-route", r -> r.path("/order/**")
                         .filters(f -> f.filter(filter))
+                        .uri("lb://ORDER-SERVICE"))
+
+                .route("order-service-route", r -> r.path("/order/**", "/order-service/v3/api-docs")
                         .uri("lb://ORDER-SERVICE"))
 
                 .route("auth-service-route", r -> r.path("/auth/**", "/auth-service/v3/api-docs")

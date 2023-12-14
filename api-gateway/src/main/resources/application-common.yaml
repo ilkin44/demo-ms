@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /
+  port: 8080
+
+spring:
+  application:
+    name: GATEWAY-SERVICE
+  main:
+    web-application-type: reactive
+    allow-circular-references: true

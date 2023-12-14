@@ -1,24 +1,22 @@
 package com.example.apigateway.client;
 
-import com.example.apigateway.data.dto.request.CheckRoleRequestDto;
-import io.jsonwebtoken.Claims;
 import lombok.NonNull;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import reactor.core.publisher.Mono;
 
-@FeignClient(name = "auth-service", url = "http://localhost:8080/auth")
+import java.util.List;
+
+@FeignClient(name = "auth-service", url = "http://localhost:9096/auth")
 @Validated
 public interface AuthClient {
     @GetMapping("/check/token")
-    Boolean checkToken(@NonNull @RequestParam String token);
+    boolean checkToken(@NonNull @RequestParam String token);
 
     @GetMapping("/check/role")
-    boolean checkRole(@RequestBody CheckRoleRequestDto requestDto);
+    boolean checkRole(@RequestParam String token, @RequestParam String requestPath);
 
     @GetMapping("/get/claims")
-    Claims getAllClaimsFromToken(@NonNull String token);
+    List<String> getAllRoles(@NonNull @RequestParam String token);
 }
