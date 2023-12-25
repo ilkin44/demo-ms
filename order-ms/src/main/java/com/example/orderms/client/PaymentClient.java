@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "payment-service", url = "http://localhost:8080/payment")
+@FeignClient(name = "payment-service", url = "http://localhost:9090/payment")
 public interface PaymentClient {
     @GetMapping("/all/{orderId}")
     List<PaymentResponseDto> getPaymentsByOrderId(@PathVariable Long orderId);
